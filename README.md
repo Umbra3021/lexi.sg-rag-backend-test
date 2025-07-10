@@ -1,4 +1,6 @@
-#🚀 Project Setup & Instructions
+
+## Installation
+
 This project uses Pinecone for vector storage and retrieval of legal case data. The setup involves uploading files to Pinecone and then running a query server to fetch relevant citations.
 
 📦 Prerequisites
@@ -14,6 +16,7 @@ One for UploadScript/
 One for the main project root
 
 The contents of both env files:
+
 PINECONE_API_KEY=your_pinecone_key
 PINECONE_INDEX=your_index_name
 
@@ -37,26 +40,36 @@ Body (JSON):
 {
   "query": "Is an insurance company liable if a vehicle has no permit?"
 }
+## How it works?
 
-How it works?
 When you run the upload script (main.js inside UploadScript/):
 
 Each file is read using pdf-parse or mammoth (for Word files).
 
 The text is chunked into smaller pieces (around 300 words) for better context retrieval.
 
-Each chunk is embedded into a vector using OpenAI’s embedding API (getEm()).
+Each chunk is embedded into a vector using custom function (getEm()).
 
 Each vector (with metadata like file name and chunk text) is pushed to Pinecone.
 
 A check is performed to avoid uploading duplicate chunks using Pinecone's fetch().
 
 🧠 2. Embedding and Indexing
+
 Vectors represent meaning of the text in high-dimensional space.
 
 Pinecone stores each chunk's vector in a vector database index for fast similarity search.
 
 Metadata stored along with vectors helps identify the source file and chunk later.
 
+The server exposes a POST /query endpoint. When a query is sent:
+
+The query is embedded into a vector.
+
+That vector is sent to Pinecone.
+
+Pinecone returns the top 5 most similar chunks.
+
+The server responds with a list of citations, each including the matched chunk of text, the source file, and a similarity score.
 
 
