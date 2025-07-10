@@ -1,4 +1,4 @@
-🚀 Project Setup & Instructions
+#🚀 Project Setup & Instructions
 This project uses Pinecone for vector storage and retrieval of legal case data. The setup involves uploading files to Pinecone and then running a query server to fetch relevant citations.
 
 📦 Prerequisites
